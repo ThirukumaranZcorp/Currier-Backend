@@ -51,16 +51,35 @@ default: &default
 
 development:
   <<: *default
-  database: CurrierApp_development  
+  database: CourierApp_development  
 
 test:
   <<: *default
-  database: CurrierApp_test          
+  database: CourierApp_test          
   username: root
   password: root
 
 production:
-  <<: *default
-  database: CurrierApp_production   
-  username: root
-  password: root
+  primary:
+    <<: *default
+    database: CourierApp_production
+    username: root
+    password: courier@123
+
+  cable:
+    <<: *default
+    database: CourierApp_production
+    username: root
+    password: courier@123
+
+  queue:
+    <<: *default
+    database: CourierApp_production
+    username: root
+    password: courier@123
+
+  cache:
+    <<: *default
+    database: CourierApp_production
+    username: root
+    password: courier@123
