@@ -25,7 +25,7 @@ class Api::V1::SessionsController < ApplicationController
     user = User.find_by(email: params[:email])
     if user
       otp = user.generate_reset_password_otp!
-      # UserMailer.reset_password_otp(user).deliver_later
+      UserMailer.reset_password_otp(user).deliver_later
       render json: { message: "OTP sent to email." }
     else
       render json: { error: "Email not found" }, status: :not_found

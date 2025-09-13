@@ -22,6 +22,14 @@ Rails.application.routes.draw do
           post 'auth/reset_password',  to: 'sessions#reset_password'
           put  'auth/change_password', to: 'sessions#change_password'
         end
+        resources :couriers
+        # resources :deliveries, only: [:create]
+        resources :deliveries do
+          member do
+            patch :assign_courier
+          end
+        end
+        resources :courier_recommendations, only: [:index]
     end
   end
   root 'health#index'
