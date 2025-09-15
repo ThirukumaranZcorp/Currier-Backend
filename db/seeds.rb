@@ -10,5 +10,5 @@
 User.find_or_create_by!(email: "courierAadmin@yopmail.com") do |user|
     user.password = "Admin@1234"
     user.password_confirmation = "Admin@1234"
-    # user.role = 0
+    user.role = 0
 end

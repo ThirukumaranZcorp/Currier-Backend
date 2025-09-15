@@ -63,23 +63,23 @@ production:
   primary:
     <<: *default
     database: CourierApp_production
-    username: root
-    password: courier@123
+    username: courier_user
+    password: Courier@123
 
   cable:
     <<: *default
     database: CourierApp_production
-    username: root
-    password: courier@123
+    username: courier_user
+    password: Courier@123
 
   queue:
     <<: *default
     database: CourierApp_production
-    username: root
-    password: courier@123
+    username: courier_user
+    password: Courier@123
 
   cache:
     <<: *default
     database: CourierApp_production
-    username: root
-    password: courier@123
+    username: courier_user
+    password: Courier@123
