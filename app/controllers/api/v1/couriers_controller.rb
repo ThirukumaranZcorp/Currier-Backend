@@ -46,6 +46,6 @@ class Api::V1::CouriersController < ApplicationController
       end
 
       def courier_params
-        params.require(:courier).permit(:name, :service_type, :base_price, :price_per_km)
+        params.require(:courier).permit(:name, :service_type, :base_price, :price_per_km , :estimate_time , :estimate_cost)
       end
 end

@@ -17,6 +17,7 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 
 
 
+gem "geocoder"
 
 gem "devise", "~> 4.9"
 gem 'devise-jwt'
