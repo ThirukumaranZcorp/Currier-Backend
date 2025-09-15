@@ -28,6 +28,7 @@ Rails.application.routes.draw do
           member do
             patch :assign_courier
           end
+          resource :delivery_locations, only: [:show, :update]
         end
         resources :courier_recommendations, only: [:index]
     end

@@ -11,4 +11,6 @@ User.find_or_create_by!(email: "courierAdmin@yopmail.com") do |user|
     user.password = "Admin@1234"
     user.password_confirmation = "Admin@1234"
     user.role = 0
+    user.name = "Admin"
+    user.jti = SecureRandom.uuid
 end

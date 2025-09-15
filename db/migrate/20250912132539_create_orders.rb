@@ -7,15 +7,17 @@ class CreateOrders < ActiveRecord::Migration[8.0]
       t.string :pickup_address
       t.float  :pickup_lat
       t.float  :pickup_lng
-
+      
       t.string :dropoff_address
       t.float  :dropoff_lat
       t.float  :dropoff_lng
-
+      
+      t.string :service_type # "Express", "Economy"
       t.string :package_size
       t.decimal :package_weight
       t.decimal :price
-      t.integer :status
+      t.integer :status , default: 0, null: false
+
 
       t.timestamps
     end
