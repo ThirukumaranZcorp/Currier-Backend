@@ -3,15 +3,35 @@ class Api::V1::DeliveryLocationsController < ApplicationController
     before_action :set_order, only: [:update,:show]
 
     # Delivery Boy updates current location
+    # def update
+    #     # authorize_delivery_boy!
+    #     puts "--------------------------------------comming here---------------------------------------"
+    #     # @order = Order.find(params[:delivery_id])
+    #     # puts "-------------------------------------------------------------"
+    #     # puts @order.inspect
+    #     # puts "-----------------------end--------------------------------------"
+    #     location = @order.delivery_location || @order.build_delivery_location
+    #     if location.update(location_params)
+    #         render json: { message: "Location updated", location: location }, status: :ok
+    #     else
+    #         render json: { errors: location.errors.full_messages }, status: :unprocessable_entity
+    #     end
+    # end
+
     def update
         # authorize_delivery_boy!
-        puts "--------------------------------------comming here---------------------------------------"
-        # @order = Order.find(params[:delivery_id])
-        # puts "-------------------------------------------------------------"
-        # puts @order.inspect
-        # puts "-----------------------end--------------------------------------"
+
         location = @order.delivery_location || @order.build_delivery_location
         if location.update(location_params)
+            #  Broadcast update to subscribed clients
+            ActionCable.server.broadcast "delivery_tracking_#{@order.id}", {
+                order_id: @order.id,
+                lat: location.current_lat,
+                lng: location.current_lng,
+                status: @order.status,
+                # eta: @order.estimated_eta
+            }
+
             render json: { message: "Location updated", location: location }, status: :ok
         else
             render json: { errors: location.errors.full_messages }, status: :unprocessable_entity

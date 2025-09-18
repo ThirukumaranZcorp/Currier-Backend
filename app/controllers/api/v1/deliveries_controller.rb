@@ -3,16 +3,42 @@ class Api::V1::DeliveriesController < ApplicationController
 
     before_action :set_order, only: [:update]
 
+    # def create
+    #     order = current_user.orders.new(order_params)
+    #     order.price = format('%.2f', calculate_price(order))
+
+    #     if order.save
+    #         render json: {
+    #         status: "success",  # ✅ custom string
+    #         message: "Delivery scheduled successfully",
+    #         order: order
+    #         }, status: :ok # ✅ HTTP 200
+    #     else
+    #         render json: {
+    #         status: "error", # ✅ custom string
+    #         errors: order.errors.full_messages
+    #         }, status: :unprocessable_entity
+    #     end
+    # end
+
     def create
         order = current_user.orders.new(order_params)
-        order.price = format('%.2f', calculate_price(order))
+        order.price = calculate_price(order).round(2)
 
         if order.save
             render json: {
-            status: "success",  # ✅ custom string
+            status: "success",
             message: "Delivery scheduled successfully",
-            order: order
-            }, status: :ok # ✅ HTTP 200
+            order: {
+                id: order.id,
+                pickup_address: order.pickup_address,
+                dropoff_address: order.dropoff_address,
+                service_type: order.courier&.name, # Assuming courier has a name column
+                # service_type: order.courier&.service_type,
+                final_price: sprintf('%.2f', order.price),
+                # status: order.status
+            }
+            }, status: :ok
         else
             render json: {
             status: "error", # ✅ custom string
@@ -64,7 +90,7 @@ class Api::V1::DeliveriesController < ApplicationController
     end
 
     def order_params
-    params.require(:order).permit(:pickup_address,:pickup_lat,:pickup_lng , :dropoff_address,:dropoff_lat ,:dropoff_lng , :package_size, :package_weight , :status ,:service_type , :courier_id)
+    params.require(:order).permit( :pickup_address,:pickup_lat,:pickup_lng , :dropoff_address,:dropoff_lat ,:dropoff_lng , :package_size, :package_weight , :status , :courier_id)
     end
 
     def calculate_price(order)
